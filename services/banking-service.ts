@@ -51,8 +51,6 @@ export class BankingServiceImpl implements BankingService{
         console.log('addAccount service started')
 
         const tempClient = await this.bankingDAO.getClientById(client.id)
-        console.log(account);
-        console.log(client);
         tempClient.accounts.push(account);
         client = tempClient
 

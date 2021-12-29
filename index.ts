@@ -129,10 +129,8 @@ app.patch('/clients/:id/accounts/:type/withdraw', async (req, res) =>{
     try{
         const {id, type} = req.params;
         const client: Client = await bankingService.getClientById(id)
-        console.log(id + "<--id---type-->" + type)
         const patch = req.body;
         const amount = patch.amount;
-        console.log(type + " " + id + " " + amount);
 
         //iterate through accounts to find the one of type "type"
         let updatedClient = client;
@@ -184,7 +182,6 @@ app.patch('/clients/:id/accounts/:type/deposit', async (req, res) =>{
         console.log(id + "<--id---type-->" + type)
         const patch = req.body;
         const amount = patch.amount;
-        console.log(type + " " + id + " " + amount);
 
         //iterate through accounts to find the one of type "type"
         let updatedClient = client;
