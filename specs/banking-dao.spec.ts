@@ -46,7 +46,7 @@ describe('DAO Specs', ()=>{
         expect(tempClient.accounts[1].type).toBe('Checking')
     })
 
-    //still failing
+    //still failing (not anymore!!)
     it('should return all accounts within a client', async ()=>{
         const response = await bankingDao.getClientById('7')
         expect(response.accounts).toBeTruthy()
