@@ -4,7 +4,7 @@ export default function errorHandler(error: Error, req: Request, res: Response){
 
     if(error instanceof ResourceNotFoundError){
         res.status(404);
-        res.send(error.message)
+        res.send('Element not found')
     }
     else{
         res.status(500)

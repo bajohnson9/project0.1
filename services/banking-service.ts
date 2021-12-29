@@ -12,7 +12,7 @@ export interface BankingService{
     deleteClient(clientId:string):Promise<Boolean>
     //BLOCK 2
     addAccount(client:Client, account:Account):Promise<Client>
-    getAccounts(acctID:string):Promise<Client>
+    //getAccounts(acctID:string):Promise<Client>
     //withdraw(clientID: string, client:Client)
 }
 
@@ -58,10 +58,6 @@ export class BankingServiceImpl implements BankingService{
 
         console.log('service finished\nClient: ' + client)
         return this.bankingDAO.addAccount(client)
-    }
-
-    async getAccounts(cid: string): Promise<Client> {
-        return this.bankingDAO.getAccounts(cid);
     }
     
     /*

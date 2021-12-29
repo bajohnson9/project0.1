@@ -74,8 +74,9 @@ app.delete('/clients/:id', async (req,res) =>{
     }
 })
 
-//delete all clients (redacted)
+
 /*
+//delete all clients (redacted)
 app.delete('/clients', async (req,res) =>{
     let clients: Client[] = await bankingService.getAllClients();
     try {

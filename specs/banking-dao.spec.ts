@@ -1,5 +1,6 @@
 import { BankingDAO, bankingDaoAzure } from "../daos/banking-dao"
 import { Account, Client } from "../entities";
+import { BankingService, BankingServiceImpl } from "../services/banking-service";
 
 
 const bankingDao: BankingDAO = bankingDaoAzure;
@@ -14,31 +15,59 @@ describe('DAO Specs', ()=>{
     })
 
     it('should create a client', async ()=>{
-        let client: Client = {name:'carlton', id:'5', accounts:[]}
+        let client: Client = {name:'carlton', id:'7', accounts:[]}
         client = await bankingDao.createClient(client)
-        expect(client.id).not.toBe('')
+        expect(client.id).toBe('7')
     })
 
     it('should get a client', async ()=>{
-        const client: Client = await bankingDao.getClientById(testId)
-        expect(client.name).toBe('carlton')
+        const client: Client = await bankingDao.getClientById('7')
+        expect(client.name).toBeTruthy()
+    })
+   
+    it('should upsert a client', async ()=>{
+        let client: Client = {name:'carlton', id:'7', accounts:[{type:'Savings', balance: 919}]}
+        expect(client.accounts[0].type).toBe('Savings')
     })
 
     
-    /*
-    it('should upsert a client', async ()=>{
-        const account: Account = {aid:'2', balance:2000, type:"Checking"}
-        let client: Client = {name:'james', id:testId, accounts:[account]}
-        await bankingDao.modifyClient(client.id, client)
-        client = await  bankingDao.getClientById(testId)
-        expect(client.accounts.length).toBe(1)
-        expect(client.name).toBe('james')
+
+    // ------------------------- BLOCK 2 ----------------------- //
+
+    it('should add an account to carlton', async ()=>{
+        const account: Account = {type:'Checking', balance: 2009}
+        let client: Client = await bankingDao.getClientById('7')
+        client.accounts.push(account)
+        const updatedClient = await bankingDao.addAccount(client)
+        
+        
+        const tempClient = await bankingDao.getClientById(client.id)
+        tempClient.accounts.push(account);
+        expect(tempClient.accounts[1].type).toBe('Checking')
     })
-    */
+
+    //still failing
+    it('should return all accounts within a client', async ()=>{
+        const response = await bankingDao.getClientById('7')
+        expect(response.accounts).toBeTruthy()
+    })
+
+    it('should withdraw/deposit from an account', async ()=>{
+        let client = await bankingDao.getClientById('7')
+
+        for(let i = 0; i < client.accounts.length; i++){
+            if(client.accounts[i].type === 'Checking'){
+                client.accounts[i].balance -= 500;
+                client = await bankingDao.modifyClient('7', client)
+            }
+        }
+
+        const response = await bankingDao.modifyClient('7', client)
+        expect(response.accounts[0].balance).toBe(1509)
+    })
 
     it('should delete a client', async ()=>{
-        const response = await bankingDao.deleteClientById(testId);
+        const response = await bankingDao.deleteClientById('7');
         expect(response).toBeTruthy();
     })
-
 })

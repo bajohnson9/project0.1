@@ -27,17 +27,6 @@ class BankingDaoAzure implements BankingDAO{
     private cclient = new CosmosClient(process.env.DB ?? 'AccountEndpoint=https://rpas-cosmosdb-account-bj.documents.azure.com:443/;AccountKey=n1tabnIm5g3iBMx1CAN2zqRN4bHVlRI8jFXaIszIOVgrB8Wqo35AtLB3Gj1ruIEhS9BYQcmLSclRKyOmpVMuJg==')
     private database = this.cclient.database('project0-db')
     private container = this.database.container('clients')
-    //as accounts are created, the ID increases ; CALL RIGHT BEFORE RETURN? no
-    /*
-    orderAccounts(client: Client){
-        
-        let i = 0;
-        while (i < client.accounts.length){
-            client.accounts[i].id=/*i.toString() ?? v4();
-            i = i.valueOf() + 1;
-        }
-        return client;
-    }*/
     
 
     async createClient(client: Client): Promise<Client> {
@@ -101,10 +90,8 @@ class BankingDaoAzure implements BankingDAO{
     }
 
     async withdraw(clientID: string, client: Client) {
-        console.log('watch it break')
         client.id = clientID;
         const response = await this.container.items.upsert<Client>(client);
-        console.log('wow it worked')
     }
 }
 
