@@ -4,9 +4,9 @@ project 0 to do:
 2. create account 	DONE
 3. get accounts		DONE
 4. withdraw/deposit	YEEEEEEEEEEEEEEEEEEEEEEEEEES FIVE HOURS LATER
-4.5make sure errors are returning properly
-5. jests		
-6. jest on github	
+4.5make sure errors are returning properly (OOPS)
+5. jests		DONE
+6. jest on github	SO CLOSE
 
 
 https://www.youtube.com/watch?v=DS8ciNYZ1gI&ab_channel=NitpickingNerds

@@ -136,8 +136,10 @@ app.patch('/clients/:id/accounts/:type/withdraw', async (req, res) =>{
         let updatedClient = client;
         for(let i = 0; i < updatedClient.accounts.length; i++){
             if(updatedClient.accounts[i].type === type){
-                updatedClient.accounts[i].balance -= amount;
-                updatedClient = await bankingService.modifyClient(req.params.id, client)
+                if(updatedClient.accounts[i].balance >= amount){
+                    updatedClient.accounts[i].balance -= amount;
+                    updatedClient = await bankingService.modifyClient(req.params.id, client)   
+                }
             }
         }
         res.status(200)
@@ -173,9 +175,9 @@ app.patch('/clients/:id/accounts/:type/withdraw', async (req, res) =>{
 
 })
 
+//deposit
 app.patch('/clients/:id/accounts/:type/deposit', async (req, res) =>{
-    
-    //EIGHTH TRY
+
     try{
         const {id, type} = req.params;
         const client: Client = await bankingService.getClientById(id)
@@ -186,7 +188,7 @@ app.patch('/clients/:id/accounts/:type/deposit', async (req, res) =>{
         //iterate through accounts to find the one of type "type"
         let updatedClient = client;
         for(let i = 0; i < updatedClient.accounts.length; i++){
-            if(updatedClient.accounts[i].type === type){
+            if(updatedClient.accounts[i].type === type){    
                 updatedClient.accounts[i].balance += amount;
                 updatedClient = await bankingService.modifyClient(req.params.id, client)
             }
