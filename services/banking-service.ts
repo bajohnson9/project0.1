@@ -13,7 +13,7 @@ export interface BankingService{
     //BLOCK 2
     addAccount(client:Client, account:Account):Promise<Client>
     getAccounts(acctID:string):Promise<Client>
-    //withdraw(client:Client, type: string)
+    //withdraw(clientID: string, client:Client)
 }
 
 
@@ -64,4 +64,9 @@ export class BankingServiceImpl implements BankingService{
         return this.bankingDAO.getAccounts(cid);
     }
     
+    /*
+    async withdraw(clientID: string, client: Client) {
+        return this.bankingDAO.(clientID, client)
+    }
+    */  
 }

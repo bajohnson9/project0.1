@@ -66,14 +66,30 @@ app.put('/clients/:id', async (req,res)=>{
 //delete client
 app.delete('/clients/:id', async (req,res) =>{
     try {
-        const client = await bankingService.deleteClient(req.params.id)    
+        const delStatus = await bankingService.deleteClient(req.params.id)    
         res.status(205)
-        res.send("deleted = " + client)
+        res.send("deleted = " + delStatus)
     } catch (error) {
         errorHandler(error,req,res)
     }
 })
 
+//delete all clients (redacted)
+/*
+app.delete('/clients', async (req,res) =>{
+    let clients: Client[] = await bankingService.getAllClients();
+    try {
+        for(let i = 0; i < clients.length; i++){
+            console.log(String(i))
+            let delStatus = await bankingService.deleteClient(String(i))
+        }
+        res.status(200)
+        res.send("deleted all")
+    } catch (error) {
+        errorHandler(error,req,res)
+    }
+})
+*/
 // ----------------------------------------BLOCK 2------------------------------------- //    
 
 //add account
@@ -108,9 +124,30 @@ app.get('/clients/:id/accounts', async (req,res)=>{
 
 app.patch('/clients/:id/accounts/:type/withdraw', async (req, res) =>{
     
-    //SEVENTH TRY
+    //EIGHTH TRY
+    try{
+        const {id, type} = req.params;
+        const client: Client = await bankingService.getClientById(id)
+        console.log(id + "<--id---type-->" + type)
+        const patch = req.body;
+        const amount = patch.amount;
+        console.log(type + " " + id + " " + amount);
 
-    //FIRST-SIXTH TRIES
+        //iterate through accounts to find the one of type "type"
+        let updatedClient = client;
+        for(let i = 0; i < updatedClient.accounts.length; i++){
+            if(updatedClient.accounts[i].type === type){
+                updatedClient.accounts[i].balance -= amount;
+                updatedClient = await bankingService.modifyClient(req.params.id, client)
+            }
+        }
+        res.status(200)
+        res.send(updatedClient)
+
+    } catch (error) {
+        errorHandler(error,req,res)
+    }
+    //FIRST-SEVENTH TRIES
     /*
     try{
         const {id, type} = req.params;
@@ -135,6 +172,33 @@ app.patch('/clients/:id/accounts/:type/withdraw', async (req, res) =>{
     }
     */
 
+})
+
+app.patch('/clients/:id/accounts/:type/deposit', async (req, res) =>{
+    
+    //EIGHTH TRY
+    try{
+        const {id, type} = req.params;
+        const client: Client = await bankingService.getClientById(id)
+        console.log(id + "<--id---type-->" + type)
+        const patch = req.body;
+        const amount = patch.amount;
+        console.log(type + " " + id + " " + amount);
+
+        //iterate through accounts to find the one of type "type"
+        let updatedClient = client;
+        for(let i = 0; i < updatedClient.accounts.length; i++){
+            if(updatedClient.accounts[i].type === type){
+                updatedClient.accounts[i].balance += amount;
+                updatedClient = await bankingService.modifyClient(req.params.id, client)
+            }
+        }
+        res.status(200)
+        res.send(updatedClient)
+
+    } catch (error) {
+        errorHandler(error,req,res)
+    }
 })
 
 app.listen(3000, () => console.log('App started'))

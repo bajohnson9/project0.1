@@ -15,7 +15,7 @@ export interface BankingDAO{
     getAccounts(id: string): Promise<Client>
     //Update
     modifyClient(clientID: string, client: Client): Promise<Client>
-    //withdraw(clientID: string, acctID: string, client: Client)
+    withdraw(clientID: string, client: Client)
     //Delete
     deleteClientById(id: string ): Promise<boolean>
 
@@ -100,7 +100,12 @@ class BankingDaoAzure implements BankingDAO{
         
     }
 
-    //async withdraw(clientID: string, acctID: string, client: Client) {}
+    async withdraw(clientID: string, client: Client) {
+        console.log('watch it break')
+        client.id = clientID;
+        const response = await this.container.items.upsert<Client>(client);
+        console.log('wow it worked')
+    }
 }
 
 export const bankingDaoAzure = new BankingDaoAzure();
