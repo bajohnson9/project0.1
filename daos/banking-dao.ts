@@ -24,7 +24,7 @@ export interface BankingDAO{
 
 class BankingDaoAzure implements BankingDAO{
     //private cclient = new CosmosClient(process.env.DB ?? 'AccountEndpoint=https://rpas-cosmosdb-account-bj.documents.azure.com:443/;AccountKey=n1tabnIm5g3iBMx1CAN2zqRN4bHVlRI8jFXaIszIOVgrB8Wqo35AtLB3Gj1ruIEhS9BYQcmLSclRKyOmpVMuJg==')
-    private cclient = new CosmosClient(process.env.DB ?? 'AccountEndpoint=https://rpas-cosmosdb-account-bj.documents.azure.com:443/;AccountKey=n1tabnIm5g3iBMx1CAN2zqRN4bHVlRI8jFXaIszIOVgrB8Wqo35AtLB3Gj1ruIEhS9BYQcmLSclRKyOmpVMuJg==')
+    private cclient = new CosmosClient(process.env.COSMOS_CONNECTION_AZURE)
     private database = this.cclient.database('project0-db')
     private container = this.database.container('clients')
     
